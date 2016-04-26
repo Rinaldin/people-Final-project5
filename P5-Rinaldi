@@ -1,0 +1,64 @@
+int a = 10;
+Person[] people = new Person[a];
+
+void setup(){
+  size(800,600);
+  
+  for(int n = 0; n < a; n++){
+    people[n] = new Person();
+    people[n].setup();
+  }
+}
+  
+void draw(){
+  scene();
+  show();
+}
+
+void scene(){
+  
+  float horizon =height/2;
+  
+  noStroke();
+  
+  rectMode(CORNER);
+  fill(0,80,210);              //sky
+  rect(0,0, width, horizon);
+  
+  fill(0,180,0);
+  rect(0,horizon,width,height);  //ground
+  
+}
+
+
+void show(){
+
+    
+  for(int n = 0; n < a; n++){ 
+    people[n].x = n*10;
+    people[n].y = width/2;
+    people[n].show();
+  }
+  
+}
+
+class Person{
+  
+  float r,g,b;
+  float w,h;
+  float x,y;
+  
+  void setup(){
+    r = random(0,255);
+    g = random(0,255);
+    b = random(0,255);
+    
+    w = random(4,12);
+    h = random(40,80);
+  }
+  
+  void show(){
+    rectMode(CENTER);
+    rect(x,y,w,h);
+  }
+}
