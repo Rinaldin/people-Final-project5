@@ -17,7 +17,7 @@ void setup(){
   horizon = height/1.5;
   
   //people sizes
-  hmin = 75;      //the people's height and width follow a bell curve similar to real life
+  hmin = 100;      //the people's height and width follow a bell curve similar to real life
   hmax = 250;      //put what you would like to be the smallest and largest values the people can be
   wmin = 20;       //the people will most likely be directly between the two numbers
   wmax = 40;
@@ -31,6 +31,7 @@ void setup(){
 void draw(){
   scene();
   show();
+  messages();
 }
 
 void scene(){
@@ -44,14 +45,14 @@ void scene(){
   fill(0,180,0);
   rect(0,horizon,width,height);  //ground
   
-  fill(0);            //These lines represents minimum, median, and maximum heights in black 
+  fill(0);            //These lines represents minimum, median, and maximum shoulder heights in black 
   stroke(0,0,0,50);
   strokeWeight(1);
   for(int n = 0; n<3; n++){
     line(0, (horizon - hmin - (n * ((hmax - hmin)/2))), width, (horizon - hmin - (n * ((hmax - hmin)/2))));
   }
   
-  stroke(255,0,0,50);         //These red lines represent where the majority of people will be
+  stroke(255,0,0,50);         //These red lines roughly represent 1st and 3rd quartiles
   for(int n = 0; n<2; n++){
     line(0, (horizon - hmin - ((hmax - hmin)/4) - (n * ((hmax - hmin)/2))), width, (horizon - hmin - ((hmax - hmin)/4) - (n * ((hmax - hmin)/2))));
   }
@@ -62,7 +63,7 @@ void scene(){
 void show(){
 
   for(int n = 0; n < a; n++){ 
-    people[n].x = 50 + (n * 50);  //placing people
+    people[n].x = 50 + (n * 50);    //placing people
   }
   
   for(int n = 0; n < a; n++){       //showing people
@@ -81,6 +82,10 @@ void keyPressed(){
 }
 
 
+void messages(){
+ textSize(20);
+}
+
 
 class Person{
   
@@ -89,6 +94,9 @@ class Person{
   float h1, h2;    //roll height
   float w,h;       //width and height
   float x,y;       //x and y position
+  
+  int feet, inches;
+  int weight;
   
   void startup(){
     r = random(0,255);          //randomizing
@@ -111,7 +119,7 @@ class Person{
     y = horizon - (h/2);  //y position
   }
   
-  void show(){
+  void body(){
     noStroke();
     fill(r,g,b);
     rectMode(CENTER);
@@ -122,5 +130,24 @@ class Person{
     arc(x, (y - (h/2) - (h/6)), w/1.5, h/4, 0, PI, CHORD);  //mouth
     ellipse(x - w/4, (y - (h/2) - (h/4)), w/8, w/8);        //eyes
     ellipse(x + w/4, (y - (h/2) - (h/4)), w/8, w/8);
+  }
+  
+  void show(){
+    body();
+    info();
+    messages();
+  }
+  
+  void info(){ 
+    feet = int((h/12));      //height
+    inches = int(h % 12);  
+    
+    weight = int(((2 * h) * w)/50);  //weight is more dependent on height then width, divided by a number to get a reasonable weight
+  }
+  
+  void messages(){
+    textSize(11);
+    text(feet + "'" + inches + "''",x - w/2, y + h/2 + 20);
+    text(weight + "lbs", x- w/2,  y + h/2 + 40);
   }
 }
