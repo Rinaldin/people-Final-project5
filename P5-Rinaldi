@@ -1,14 +1,18 @@
+//Project 5 by Nikoli Rinaldi
+//CST 112 with professor BAM!
+
+
 float horizon;
 float hmin, hmax;
 float wmin, wmax;
 
-int a = 10;
+int a = 15;  //number of people
 
 Person[] people = new Person[a];
 
 void setup(){
   
-  size(800,600);
+  size(1000,800);
   
   horizon = height/1.5;
   
@@ -19,7 +23,7 @@ void setup(){
   wmax = 40;
   
   for(int n = 0; n < a; n++){
-    people[n] = new Person();
+    people[n] = new Person();    //initializing people
     people[n].startup();
   }
 }
@@ -40,14 +44,14 @@ void scene(){
   fill(0,180,0);
   rect(0,horizon,width,height);  //ground
   
-  fill(0);
+  fill(0);            //These lines represents minimum, median, and maximum heights in black 
   stroke(0,0,0,50);
   strokeWeight(1);
   for(int n = 0; n<3; n++){
     line(0, (horizon - hmin - (n * ((hmax - hmin)/2))), width, (horizon - hmin - (n * ((hmax - hmin)/2))));
   }
   
-  stroke(255,0,0,50);
+  stroke(255,0,0,50);         //These red lines represent where the majority of people will be
   for(int n = 0; n<2; n++){
     line(0, (horizon - hmin - ((hmax - hmin)/4) - (n * ((hmax - hmin)/2))), width, (horizon - hmin - ((hmax - hmin)/4) - (n * ((hmax - hmin)/2))));
   }
@@ -58,10 +62,10 @@ void scene(){
 void show(){
 
   for(int n = 0; n < a; n++){ 
-    people[n].x = 50 + (n * 50);
+    people[n].x = 50 + (n * 50);  //placing people
   }
   
-  for(int n = 0; n < a; n++){ 
+  for(int n = 0; n < a; n++){       //showing people
     people[n].position();
     people[n].show();
   }
@@ -80,43 +84,43 @@ void keyPressed(){
 
 class Person{
   
-  float r,g,b;
-  float w1, w2;
-  float h1, h2;
-  float w,h;
-  float x,y;
+  float r,g,b;     //colors
+  float w1, w2;    //roll width
+  float h1, h2;    //roll height
+  float w,h;       //width and height
+  float x,y;       //x and y position
   
   void startup(){
-    r = random(0,255);
+    r = random(0,255);          //randomizing
     g = random(0,255);
     b = random(0,255);
     
-    w1 = random(wmin/2,wmax/2);
-    w2 = random(wmin/2,wmax/2);
+    w1 = random(wmin/2,wmax/2);    //width and height can be adjusted in setup ^^
+    w2 = random(wmin/2,wmax/2);    
     
-    h1 = random(hmin/2,hmax/2);
+    h1 = random(hmin/2,hmax/2);    
     h2 = random(hmin/2,hmax/2);
     
-    w = w1 + w2;
+    w = w1 + w2;  //adding the random halves give a bell curve result
     h = h1 + h2;
     
     x = 100;
   }
   
   void position(){
-    y = horizon - (h/2);
+    y = horizon - (h/2);  //y position
   }
   
   void show(){
     noStroke();
     fill(r,g,b);
     rectMode(CENTER);
-    rect(x,y,w,h);
-    ellipse(x, (y - (h/2) - (h/6)), w, h/3);
+    rect(x,y,w,h);      //body
+    ellipse(x, (y - (h/2) - (h/6)), w, h/3);  //head
     
     fill(0);
-    arc(x, (y - (h/2) - (h/6)), w/1.5, h/4, 0, PI, CHORD);
-    ellipse(x - w/4, (y - (h/2) - (h/4)), w/8, w/8);
+    arc(x, (y - (h/2) - (h/6)), w/1.5, h/4, 0, PI, CHORD);  //mouth
+    ellipse(x - w/4, (y - (h/2) - (h/4)), w/8, w/8);        //eyes
     ellipse(x + w/4, (y - (h/2) - (h/4)), w/8, w/8);
   }
 }
