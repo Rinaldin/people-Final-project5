@@ -1,12 +1,26 @@
+float horizon;
+float hmin, hmax;
+float wmin, wmax;
+
 int a = 10;
+
 Person[] people = new Person[a];
 
 void setup(){
+  
   size(800,600);
+  
+  horizon = height/1.5;
+  
+  //people sizes
+  hmin = 75;      //the people's height and width follow a bell curve similar to real life
+  hmax = 250;      //put what you would like to be the smallest and largest values the people can be
+  wmin = 20;       //the people will most likely be directly between the two numbers
+  wmax = 40;
   
   for(int n = 0; n < a; n++){
     people[n] = new Person();
-    people[n].setup();
+    people[n].startup();
   }
 }
   
@@ -17,48 +31,92 @@ void draw(){
 
 void scene(){
   
-  float horizon =height/2;
-  
   noStroke();
   
   rectMode(CORNER);
-  fill(0,80,210);              //sky
+  fill(116,203,232);              //sky
   rect(0,0, width, horizon);
   
   fill(0,180,0);
   rect(0,horizon,width,height);  //ground
+  
+  fill(0);
+  stroke(0,0,0,50);
+  strokeWeight(1);
+  for(int n = 0; n<3; n++){
+    line(0, (horizon - hmin - (n * ((hmax - hmin)/2))), width, (horizon - hmin - (n * ((hmax - hmin)/2))));
+  }
+  
+  stroke(255,0,0,50);
+  for(int n = 0; n<2; n++){
+    line(0, (horizon - hmin - ((hmax - hmin)/4) - (n * ((hmax - hmin)/2))), width, (horizon - hmin - ((hmax - hmin)/4) - (n * ((hmax - hmin)/2))));
+  }
   
 }
 
 
 void show(){
 
-    
   for(int n = 0; n < a; n++){ 
-    people[n].x = n*10;
-    people[n].y = width/2;
-    people[n].show();
+    people[n].x = 50 + (n * 50);
   }
   
+  for(int n = 0; n < a; n++){ 
+    people[n].position();
+    people[n].show();
+  }
 }
+
+
+void keyPressed(){
+  if (key == 'r'){
+    for(int n = 0; n < a; n++){
+      people[n].startup();
+    }
+  }
+}
+
+
 
 class Person{
   
   float r,g,b;
+  float w1, w2;
+  float h1, h2;
   float w,h;
   float x,y;
   
-  void setup(){
+  void startup(){
     r = random(0,255);
     g = random(0,255);
     b = random(0,255);
     
-    w = random(4,12);
-    h = random(40,80);
+    w1 = random(wmin/2,wmax/2);
+    w2 = random(wmin/2,wmax/2);
+    
+    h1 = random(hmin/2,hmax/2);
+    h2 = random(hmin/2,hmax/2);
+    
+    w = w1 + w2;
+    h = h1 + h2;
+    
+    x = 100;
+  }
+  
+  void position(){
+    y = horizon - (h/2);
   }
   
   void show(){
+    noStroke();
+    fill(r,g,b);
     rectMode(CENTER);
     rect(x,y,w,h);
+    ellipse(x, (y - (h/2) - (h/6)), w, h/3);
+    
+    fill(0);
+    arc(x, (y - (h/2) - (h/6)), w/1.5, h/4, 0, PI, CHORD);
+    ellipse(x - w/4, (y - (h/2) - (h/4)), w/8, w/8);
+    ellipse(x + w/4, (y - (h/2) - (h/4)), w/8, w/8);
   }
 }
