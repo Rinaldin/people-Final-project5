@@ -9,6 +9,10 @@ float wmin, wmax;
 int a = 15;  //number of people
 
 Person[] people = new Person[a];
+String[] names = {"Emma", "Noah", "Olivia", "Liam", "Sophia", "Mason", "Isabella", "Jacob", "Ava",
+"William", "Mia", "Ethan", "Emily", "Michael", "Abigail", "Madison", "James", "Daniel", "Alex", "Harper",
+"Elijah", "Sofia", "Ben", "Avery", "Logan", "Liz", "Beth", "Aiden", "Amelia", "Jayden", "Evelyn", "Matthew",
+"Ellah", "Jack", "Jackson", "Matt", "Chloe", "David"};
 
 void setup(){
   
@@ -19,23 +23,53 @@ void setup(){
   //people sizes
   hmin = 100;      //the people's height and width follow a bell curve similar to real life
   hmax = 250;      //put what you would like to be the smallest and largest values the people can be
-  wmin = 20;       //the people will most likely be directly between the two numbers
+  wmin = 30;       //the people will most likely be directly between the two numbers
   wmax = 40;
   
   for(int n = 0; n < a; n++){
     people[n] = new Person();    //initializing people
     people[n].startup();
   }
+  
+  for(int n = 0; n < a; n++){ 
+    people[n].x = 50 + (n * 50);    //placing people
+  }
 }
   
 void draw(){
   scene();
   show();
+  numbers();
   messages();
 }
 
-void scene(){
-  
+void numbers(){
+  hAveraging();
+  weightAveraging();
+}
+
+void weightAveraging(){
+  float average = 0;
+  for(int n = 0; n < a; n++){
+    average += people[n].weight;
+  }
+  average = int(average / a);
+  text("Average weight : " + average + "lbs", 20, (1.3 * horizon) + 20);
+}
+
+void hAveraging(){
+  int feet, inches;
+  float average = 0;
+  for(int n = 0; n < a; n++){
+    average += people[n].h;
+  }
+  average = (average / a);
+  feet = int(average/12);
+  inches = int(average%12);
+  text("Average height : " + feet + "'" + inches + "''", 20, 1.3 * horizon);
+}
+
+void scene(){  
   noStroke();
   
   rectMode(CORNER);
@@ -61,11 +95,6 @@ void scene(){
 
 
 void show(){
-
-  for(int n = 0; n < a; n++){ 
-    people[n].x = 50 + (n * 50);    //placing people
-  }
-  
   for(int n = 0; n < a; n++){       //showing people
     people[n].position();
     people[n].show();
@@ -84,6 +113,9 @@ void keyPressed(){
 
 void messages(){
  textSize(20);
+ text("Project 5", 20,30);
+ textSize(12);
+ text("By Nikoli Rinaldi", 20, 50);
 }
 
 
@@ -97,6 +129,8 @@ class Person{
   
   int feet, inches;
   int weight;
+  
+  String name;
   
   void startup(){
     r = random(0,255);          //randomizing
@@ -112,7 +146,7 @@ class Person{
     w = w1 + w2;  //adding the random halves give a bell curve result
     h = h1 + h2;
     
-    x = 100;
+    name = names[int(random(0,names.length))];
   }
   
   void position(){
@@ -140,14 +174,15 @@ class Person{
   
   void info(){ 
     feet = int((h/12));      //height
-    inches = int(h % 12);  
+    inches = int(h % 12);
     
     weight = int(((2 * h) * w)/50);  //weight is more dependent on height then width, divided by a number to get a reasonable weight
   }
   
   void messages(){
     textSize(11);
-    text(feet + "'" + inches + "''",x - w/2, y + h/2 + 20);
-    text(weight + "lbs", x- w/2,  y + h/2 + 40);
+    text(name, x - w/2, y + h/2 + 25);
+    text(feet + "'" + inches + "''",x - w/2, y + h/2 + 40);
+    text(weight + "lbs", x- w/2,  y + h/2 + 55);
   }
 }
