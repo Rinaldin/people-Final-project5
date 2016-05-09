@@ -10,16 +10,17 @@ float alpha = 0;       //for help screen
 int cloudsn = 7;
 int a = 15;  //number of people
 
-Cloud[] clouds = new Cloud[cloudsn];
+Cloud[] clouds = new Cloud[cloudsn];  //starting people and clouds
 Person[] people = new Person[a];
 
+//list of names for the people
 String[] names = {"Emma", "Noah", "Olivia", "Liam", "Sophia", "Mason", "Isabella", "Jacob", "Ava",
 "William", "Mia", "Ethan", "Emily", "Michael", "Abigail", "Madison", "James", "Daniel", "Alex", "Harper",
 "Elijah", "Sofia", "Ben", "Avery", "Logan", "Liz", "Beth", "Aiden", "Amelia", "Jayden", "Evelyn", "Matthew",
 "Ellah", "Jack", "Jackson", "Matt", "Chloe", "David"};
 
-Button help,quit,randomize,tallest,widest,fattest,order;
-Bird tweet;
+Button help,quit,randomize,tallest,widest,fattest,order;  //buttons
+Bird tweet;   //birds
 
 void setup(){
   
@@ -32,8 +33,8 @@ void setup(){
   hmax = 250;      //put what you would like to be the smallest and largest values the people can be
   wmin = 30;       //the people will most likely be directly between the two numbers
   wmax = 40;
-  
-  help = new Button(width/2 + width/2.5, height - height/16, "help");
+    
+  help = new Button(width/2 + width/2.5, height - height/16, "help");                   //poition of buttons
   quit = new Button(width/2 + width/2.5 -60, height - height/16, "quit");
   randomize = new Button(width/2 + width/2.5 -120, height - height/16, "random");
   order = new Button(width/2 + width/2.5 -180, height - height/16, "order");
@@ -41,10 +42,10 @@ void setup(){
   widest = new Button(width/2 + width/2.5 -300, height - height/16, "widest");
   fattest = new Button(width/2 + width/2.5 -360, height - height/16, "fattest");
   
-  tweet = new Bird();
+  tweet = new Bird();   //setting up bird
   tweet.startup();
   
-  peopleStartup();
+  peopleStartup();    //setting up people then clouds
   cloudStartup();
 
 }
@@ -57,12 +58,12 @@ void cloudStartup(){
   float x = -100;
   float y = 0;
   
-  cloudsn = int( random(1, 7.5));
+  cloudsn = int( random(1, 7.5));       //clouds start with random width and y coordinate
   wide = random(150,200);
   y = random(horizon/2);
   
   for(int n = 0; n < clouds.length; n++){
-    clouds[n] = new Cloud(wide - n*20, x - n*100, y + n*50);
+    clouds[n] = new Cloud(wide - n*20, x - n*100, y + n*50);    //each one gets smaller and moves downward and leftward
   }
 }
   
@@ -100,7 +101,7 @@ void help(){     //eventually will be help screen
    
    textSize(12);
    
-   text("Press any of the buttons to do their actions", 50,80);
+   text("Press any of the buttons to do their actions", 50,80);       //controls
    text("Press 't' to move tallest to the end", 50, 100);
    text("Press 'w' to move widest to the end", 50, 120);
    text("Press 'f' to move fattest to the end", 50,140);
@@ -111,7 +112,7 @@ void help(){     //eventually will be help screen
    text("Press 'q' to quit", 50, 260);
    
    String b = "Project 5 by Nikoli Rinaldi:\n A random set of people are generated with random qualities.\n Their height and width follow bell curves.\n The black lines represent maximum and minimum heights possible.\n The red lines represnt first and third quartiles.\n The bird lands on the shoulder of the tallest person.";
-   text( b, width/2, height/16);
+   text( b, width/2, height/16);      //summary
    
    help.show();
 }
@@ -132,16 +133,16 @@ float dx, dy;
   }
   
   void movement(){
-    float tall = 0;
+    float tall = 0;   //locates the tallest person then moves toward its shoulder
     int pos = 0;
     
-    for (int n = 0; n < people.length; n++){
+    for (int n = 0; n < people.length; n++){    //finding tallest
       if (tall < people[n].h){
         tall = people[n].h;
         pos = n;
       }
     }
-    dx = (people[pos].x - ((people[pos].w)/2) - x) /frameRate /1.5;
+    dx = (people[pos].x - ((people[pos].w)/2) - x) /frameRate /1.5;   //moving to shoulder
     dy = (people[pos].y - ((people[pos].h)/2) - y) /frameRate /2;
     
     x += dx;
@@ -157,7 +158,7 @@ float dx, dy;
   }
 } 
 
-void weightAveraging(){
+void weightAveraging(){   //calculating average weight
   float average = 0;
   for(int n = 0; n < a; n++){
     average += people[n].weight;
@@ -166,7 +167,7 @@ void weightAveraging(){
   text("Average weight : " + average + "lbs", 20, (1.3 * horizon) + 20);
 }
 
-void hAveraging(){
+void hAveraging(){      //calculating average height
   int feet, inches;
   float average = 0;
   for(int n = 0; n < a; n++){
@@ -190,7 +191,7 @@ void scene(){
   fill(116,203,232);              //sky
   rect(0,0, width, horizon);
   
-  for(int n = 0; n < cloudsn; n++){ 
+  for(int n = 0; n < cloudsn; n++){   //clouds running
     clouds[n].movement();
     clouds[n].show();
   }
@@ -221,7 +222,7 @@ void show(){
   
   tweet.movement();
   
-  help.show();
+  help.show();    //showing buttons
   quit.show();
   randomize.show();
   order.show();
@@ -231,9 +232,9 @@ void show(){
   order.show();
 }
 
-void mousePressed(){
+void mousePressed(){    //called when mouse is pressed
   
-  help.press();
+  help.press();         //checks to see if a buttons is pressed
   quit.press();
   randomize.press();
   order.press();
@@ -241,6 +242,7 @@ void mousePressed(){
   widest.press();
   fattest.press();
   
+  //executes statement of specific button pressed
   if(help.press == true){
     if (alpha > 254){
        alpha = 0;
@@ -305,7 +307,7 @@ void tallest(Person[] a){
   float position = 0;
   int xpos = 0;
   
-  for (int n = 0; n < a.length; n ++){
+  for (int n = 0; n < a.length; n ++){    //finding tallest person
     
     if( position < a[n].x){
       position = a[n].x;
@@ -318,11 +320,11 @@ void tallest(Person[] a){
     }
   }
   
-  swap(a, pos, xpos);
+  swap(a, pos, xpos); //using swap to send to end
   
 }
 
-void swap(Person[] c, int a, int b){
+void swap(Person[] c, int a, int b){    //swap function, needs array and array index of two persons, then switches their postitions
   
   float hold;
   
@@ -331,7 +333,7 @@ void swap(Person[] c, int a, int b){
   c[b].x = hold;
 }
 
-void fattest(Person[] a){
+void fattest(Person[] a){ //finding heaviest person
   
   float big = 0;
   int pos = 0;
@@ -355,7 +357,7 @@ void fattest(Person[] a){
   
 }
 
-void width(Person[] a){
+void width(Person[] a){ //finding widest person
   
   float big = 0;
   int pos = 0;
@@ -379,7 +381,7 @@ void width(Person[] a){
   
 }
 
-void keyPressed(){
+void keyPressed(){        //executing statements if specific buttons is pressed
   if (key == 'r'){
     for(int n = 0; n < a; n++){
       peopleStartup();
@@ -423,7 +425,7 @@ void keyPressed(){
 
 
 
-void messages(){
+void messages(){      //title
  fill(0);
  textSize(20);
  text("Project 5", 20,30);
@@ -509,15 +511,15 @@ class Cloud{
  float w;
  
  
- Cloud(float ww, float xx, float yy){
+ Cloud(float ww, float xx, float yy){   //constructor
    w = ww;
    x = xx;
    y = yy;
  }
  
- void movement(){
+ void movement(){   //moves left and resets when off the screen
    x +=1;
-   if (x-600>width){
+   if (x-600>width){    
      cloudStartup();
    }
  }
@@ -531,7 +533,7 @@ class Cloud{
 
 class Button{
   
-  float x,y;
+  float x,y;      //button has name, position, and boolean of press
   float gray;
   String name;
   boolean press;
@@ -547,7 +549,7 @@ class Button{
   }
   
   void press(){
-    if ( dist(mouseX, mouseY, x,y) < 25 && mousePressed){
+    if ( dist(mouseX, mouseY, x,y) < 25 && mousePressed){   //finding if button is pressed
       press = true;
     }else{
       press = false;
@@ -556,7 +558,7 @@ class Button{
   
   void show(){
     
-   if ( dist(mouseX, mouseY, x,y) < 25){
+   if ( dist(mouseX, mouseY, x,y) < 25){    //button turns gray if hovered over, more so if clicked
      gray = 50;
      if(mousePressed){
        gray = 100;
@@ -568,7 +570,7 @@ class Button{
    }
       
    fill(0);
-   rectMode(CENTER);
+   rectMode(CENTER);      //shape of buttons
    ellipse(x,y, 55, 55);
    fill(255 - gray);
    ellipse(x,y, 50, 50);
@@ -576,16 +578,3 @@ class Button{
    text( name ,x - 20, y+2);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
