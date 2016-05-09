@@ -19,6 +19,7 @@ String[] names = {"Emma", "Noah", "Olivia", "Liam", "Sophia", "Mason", "Isabella
 "Ellah", "Jack", "Jackson", "Matt", "Chloe", "David"};
 
 Button help,quit,randomize,tallest,widest,fattest,order;
+Bird tweet;
 
 void setup(){
   
@@ -39,6 +40,9 @@ void setup(){
   tallest = new Button(width/2 + width/2.5 -240, height - height/16, "tallest");
   widest = new Button(width/2 + width/2.5 -300, height - height/16, "widest");
   fattest = new Button(width/2 + width/2.5 -360, height - height/16, "fattest");
+  
+  tweet = new Bird();
+  tweet.startup();
   
   peopleStartup();
   cloudStartup();
@@ -102,10 +106,11 @@ void help(){     //eventually will be help screen
    text("Press 'f' to move fattest to the end", 50,140);
    text("Press 'r' to randomize people", 50, 160);
    text("Press 'c' to reset clouds", 50, 200);
+   text("Press 'b' to reset bird", 50,  220);
    text("Press '?' to toggle help screen", 50,240);
    text("Press 'q' to quit", 50, 260);
    
-   String b = "Project 5 by Nikoli Rinaldi:\n A random set of people are generated with random qualities.\n Their height and width follow bell curves.\n The black lines represent maximum and minimum heights possible.\n The red lines represnt first and third quartiles.\n";
+   String b = "Project 5 by Nikoli Rinaldi:\n A random set of people are generated with random qualities.\n Their height and width follow bell curves.\n The black lines represent maximum and minimum heights possible.\n The red lines represnt first and third quartiles.\n The bird lands on the shoulder of the tallest person.";
    text( b, width/2, height/16);
    
    help.show();
@@ -115,6 +120,42 @@ void numbers(){
   hAveraging();
   weightAveraging();
 }
+
+class Bird{
+  
+float x,y;
+float dx, dy;
+  
+  void startup(){
+    x = 0;
+    y = 0;
+  }
+  
+  void movement(){
+    float tall = 0;
+    int pos = 0;
+    
+    for (int n = 0; n < people.length; n++){
+      if (tall < people[n].h){
+        tall = people[n].h;
+        pos = n;
+      }
+    }
+    dx = (people[pos].x - ((people[pos].w)/2) - x) /frameRate /1.5;
+    dy = (people[pos].y - ((people[pos].h)/2) - y) /frameRate /2;
+    
+    x += dx;
+    y += dy;
+    
+  show();
+  }
+  
+  void show(){
+    fill(200,200,41);
+    ellipse(x,y, 20, 10);
+    triangle(x-7, y, x+7, y, x, y+ (22*( sin(y) )) );
+  }
+} 
 
 void weightAveraging(){
   float average = 0;
@@ -177,6 +218,8 @@ void show(){
     people[n].position();
     people[n].show();
   }
+  
+  tweet.movement();
   
   help.show();
   quit.show();
@@ -346,6 +389,10 @@ void keyPressed(){
   
   if (key == 't'){
     tallest(people);
+  }
+  
+  if (key == 'b'){
+   tweet.startup(); 
   }
   
   if (key == 'w'){
@@ -529,3 +576,16 @@ class Button{
    text( name ,x - 20, y+2);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
