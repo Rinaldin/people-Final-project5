@@ -37,7 +37,7 @@ void setup(){
   help = new Button(width/2 + width/2.5, height - height/16, "help");                   //poition of buttons
   quit = new Button(width/2 + width/2.5 -60, height - height/16, "quit");
   randomize = new Button(width/2 + width/2.5 -120, height - height/16, "random");
-  order = new Button(width/2 + width/2.5 -180, height - height/16, "order");
+  order = new Button(width*2 + width/2.5 -180, height *2 - height/16, "order");
   tallest = new Button(width/2 + width/2.5 -240, height - height/16, "tallest");
   widest = new Button(width/2 + width/2.5 -300, height - height/16, "widest");
   fattest = new Button(width/2 + width/2.5 -360, height - height/16, "fattest");
